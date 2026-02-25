@@ -99,7 +99,7 @@ func main() {
 			}
 			fmt.Println("Result:", j)
 
-			fmt.Println("\033[0m")
+			fmt.Print("\033[0m")
 		}
 		fmt.Print("\033[0;36m-------------------------------------\033[0m\n")
 
