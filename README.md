@@ -76,3 +76,6 @@ Example ``` config.json ```:
 - Spawns a Goroutine for each target to send an HTTP request concurrently.<br>
 - Safely writes the HTTP Status Code (or 0 if unreachable) to a shared Map using sync.Mutex.<br>
 - Prints the results to the terminal and waits for interval_seconds before the next cycle.
+
+## License
+- <a href="https://github.com/Thitipong-PP/gopher-watchdog/blob/main/LICENSE">MIT License</a>
