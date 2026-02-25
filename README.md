@@ -44,9 +44,9 @@ $ go run main.go
 
 ## Configuration
 The tool requires a config.json file to run.<br>
-interval_seconds: Delay between each monitoring cycle (in seconds).<br>
-limit: Number of times to run the check. Set to -1 for an infinite loop.<br>
-targets: Array of target objects containing the url and HTTP method.<br>
+* interval_seconds: Delay between each monitoring cycle (in seconds).<br>
+* limit: Number of times to run the check. Set to -1 for an infinite loop.<br>
+* targets: Array of target objects containing the url and HTTP method.<br>
 
 Example ``` config.json ```:
 ```
@@ -71,8 +71,8 @@ Example ``` config.json ```:
 ```
 
 ## How It Works Under The Hood
-Reads config.json.<br>
-Loops through targets based on the limit condition.<br>
-Spawns a Goroutine for each target to send an HTTP request concurrently.<br>
-Safely writes the HTTP Status Code (or 0 if unreachable) to a shared Map using sync.Mutex.<br>
-Prints the results to the terminal and waits for interval_seconds before the next cycle.
+- Reads config.json.<br>
+- Loops through targets based on the limit condition.<br>
+- Spawns a Goroutine for each target to send an HTTP request concurrently.<br>
+- Safely writes the HTTP Status Code (or 0 if unreachable) to a shared Map using sync.Mutex.<br>
+- Prints the results to the terminal and waits for interval_seconds before the next cycle.
