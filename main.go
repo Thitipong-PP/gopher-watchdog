@@ -85,10 +85,23 @@ func main() {
 		wg.Wait()
 
 		// Output result
+		fmt.Print("\033[0;36m---------- Gopher Watchdog ----------\033[0m\n")
 		for i, j := range result {
 			fmt.Println("URL:", i)
+			
+			switch {
+			case j == 0, j>=400:
+				fmt.Print("\033[31m")
+			case j >= 200 && j < 300:
+				fmt.Print("\033[32m")
+			default:
+				fmt.Print("\033[33m")
+			}
 			fmt.Println("Result:", j)
+
+			fmt.Println("\033[0m")
 		}
+		fmt.Print("\033[0;36m-------------------------------------\033[0m\n")
 
 		time.Sleep(time.Second * time.Duration(config.IntervalSeconds))
 		config.Limit--
