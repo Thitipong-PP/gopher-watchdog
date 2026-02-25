@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"sync"
+	"time"
 )
 
 // Wait Group
@@ -25,6 +26,8 @@ type Target struct {
 
 // Config struct
 type Config struct {
+	IntervalSeconds int `json:"interval_seconds"`
+	Limit int `json:"limit"`
 	TargetLists []Target `json:"targets"`
 }
 
@@ -74,15 +77,20 @@ func main() {
 	}
 
 	// Watchdog work
-	for _, tg := range config.TargetLists {
-		wg.Add(1)
-		go watchdog(tg)
-	}
-	wg.Wait()
+	for config.Limit != 0 {
+		for _, tg := range config.TargetLists {
+			wg.Add(1)
+			go watchdog(tg)
+		}
+		wg.Wait()
 
-	// Output result
-	for i, j := range result {
-		fmt.Println("URL:", i)
-		fmt.Println("Result:", j)
+		// Output result
+		for i, j := range result {
+			fmt.Println("URL:", i)
+			fmt.Println("Result:", j)
+		}
+
+		time.Sleep(time.Second * time.Duration(config.IntervalSeconds))
+		config.Limit--
 	}
 }
