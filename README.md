@@ -1,7 +1,7 @@
 # Gopher Watchdog
-[![GoDoc](https://godoc.org/github.com/google/trillian?status.svg)](https://godoc.org/github.com/google/trillian)
 
-A lightweight, concurrent HTTP monitoring tool written in Go. <br>
+A lightweight, concurrent HTTP monitoring tool written in Go.
+
 Gopher Watchdog continuously monitors the uptime and HTTP status of multiple target URLs. It uses Go's concurrency model (Goroutines and WaitGroups) to perform health checks efficiently without blocking, and employs `sync.Mutex` for thread-safe state management.
 
 ## Disclaimer & Warnings
@@ -25,10 +25,7 @@ Please use this tool responsibly. Since Gopher Watchdog can generate concurrent 
 * Go 1.25.6 or higher
 
 ## Getting the Source Code
-Using `git clone` allows you to work in whatever directory you want. You will
-still need to set GOPATH in order to build some apps (recommended to put this in
-a cache dir). E.g.:
-
+Clone the repository to your local machine:
 ```
 $ cd ${WORKDIR}
 $ git clone https://github.com/Thitipong-PP/gopher-watchdog.git
@@ -43,39 +40,43 @@ $ go run main.go
 ```
 
 ## Configuration
-The tool requires a config.json file to run.<br>
-* interval_seconds: Delay between each monitoring cycle (in seconds).<br>
-* limit: Number of times to run the check. Set to -1 for an infinite loop.<br>
-* targets: Array of target objects containing the url and HTTP method.<br>
+The tool requires a config.json file to run.
+* interval_seconds: Delay between each monitoring cycle (in seconds).
+* limit: Number of times to run the check. Set to -1 for an infinite loop.
+* targets: Array of target objects containing the url and HTTP method.
 
-Example ``` config.json ```:
-```
+Example config.json:
+``` json
 {
-  "interval_seconds": 5,
-  "limit": -1,
-  "targets": [
-    {
-      "url": "[https://google.com](https://google.com)",
-      "method": "GET"
-    },
-    {
-      "url": "[https://api.github.com](https://api.github.com)",
-      "method": "GET"
-    },
-    {
-      "url": "[https://this-web-does-not-exist.com](https://this-web-does-not-exist.com)",
-      "method": "POST"
-    }
-  ]
+    "interval_seconds": 3,
+    "limit": -1,
+    "targets": [
+        {
+            "url": "https://google.com",
+            "method": "GET"
+        },
+        {
+            "url": "https://api.github.com",
+            "method": "POST"
+        },
+        {
+            "url": "https://this-web-does-not-exist.com",
+            "method": "GET"
+        },
+        {
+            "url": "https://x.com",
+            "method": "GET"
+        }
+    ]
 }
 ```
 
 ## How It Works Under The Hood
-- Reads config.json.<br>
-- Loops through targets based on the limit condition.<br>
-- Spawns a Goroutine for each target to send an HTTP request concurrently.<br>
-- Safely writes the HTTP Status Code (or 0 if unreachable) to a shared Map using sync.Mutex.<br>
+- Reads config.json.
+- Loops through targets based on the limit condition.
+- Spawns a Goroutine for each target to send an HTTP request concurrently.
+- Safely writes the HTTP Status Code (or 0 if unreachable) to a shared Map using sync.Mutex.
 - Prints the results to the terminal and waits for interval_seconds before the next cycle.
 
 ## License
-- <a href="https://github.com/Thitipong-PP/gopher-watchdog/blob/main/LICENSE">MIT License</a>
+[MIT License](https://github.com/Thitipong-PP/gopher-watchdog/blob/main/LICENSE)
