@@ -29,20 +29,30 @@ type Config struct {
 }
 
 // Send request to url
-func watchdog (url string) {
+func watchdog (tg Target) {
 	defer wg.Done()
 
-	res, err := http.Get(url)
+	// Make request
+	req, err := http.NewRequest(tg.Method, tg.Url, nil)
+	if err != nil {
+		fmt.Println("Something went wrong! Please check a", tg)
+		return
+	}
+
+	// Send request
+	client := &http.Client{}
+	res, err := client.Do(req)
 	if err != nil {
 		mu.Lock()
-		result[url] = 0
+		result[tg.Method + " " + tg.Url] = 0
 		mu.Unlock()
 		return
 	}
 	defer res.Body.Close()
 
+	// Put result
 	mu.Lock()
-	result[url] = res.StatusCode
+	result[tg.Method + " " + tg.Url] = res.StatusCode
 	mu.Unlock()
 }
 
@@ -57,18 +67,20 @@ func main() {
 		panic("Something went wrong! Please check error\n" + err.Error())
 	}
 
+	// Unmarshal to json
 	err = json.Unmarshal(readFile, &config)
 	if err != nil {
 		panic("Something went wrong! Please check error\n" + err.Error())
 	}
 
+	// Watchdog work
 	for _, tg := range config.TargetLists {
 		wg.Add(1)
-		go watchdog(tg.Url)
+		go watchdog(tg)
 	}
-
 	wg.Wait()
 
+	// Output result
 	for i, j := range result {
 		fmt.Println("URL:", i)
 		fmt.Println("Result:", j)
