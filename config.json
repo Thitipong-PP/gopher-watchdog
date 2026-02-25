@@ -1,0 +1,20 @@
+{
+  "targets": [
+    {
+        "url": "https://google.com",
+        "method": "GET"
+    },
+    {
+        "url": "https://api.github.com",
+        "method": "POST"
+    },
+    {
+        "url": "https://this-web-does-not-exist.com",
+        "method": "GET"
+    },
+    {
+        "url": "https://x.com",
+        "method": "GET"
+    }
+  ]
+}

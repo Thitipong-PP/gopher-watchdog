@@ -1,8 +1,10 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 	"sync"
 )
 
@@ -14,6 +16,17 @@ var mu sync.Mutex
 
 // Map
 var result = make(map[string]int)
+
+// Target struct
+type Target struct {
+	Url string `json:"url"`
+	Method string `json:"method"`
+}
+
+// Config struct
+type Config struct {
+	TargetLists []Target `json:"targets"`
+}
 
 // Send request to url
 func watchdog (url string) {
@@ -36,11 +49,22 @@ func watchdog (url string) {
 // Main program
 func main() {
 	// Url list for check
-	urlLists := []string{"https://google.com", "https://this-web-does-not-exist.com", "https://github.com"}
+	var config Config;
 
-	for _, url := range urlLists {
+	// Read file
+	readFile, err := os.ReadFile("config.json")
+	if err != nil {
+		panic("Something went wrong! Please check error\n" + err.Error())
+	}
+
+	err = json.Unmarshal(readFile, &config)
+	if err != nil {
+		panic("Something went wrong! Please check error\n" + err.Error())
+	}
+
+	for _, tg := range config.TargetLists {
 		wg.Add(1)
-		go watchdog(url)
+		go watchdog(tg.Url)
 	}
 
 	wg.Wait()
