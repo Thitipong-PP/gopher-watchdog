@@ -1,4 +1,4 @@
-name: Go Watchdog CI
+name: Gopher Watchdog CI
 
 on:
   push:
