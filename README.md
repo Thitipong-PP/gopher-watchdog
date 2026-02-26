@@ -21,7 +21,7 @@ Please use this tool responsibly. Since Gopher Watchdog can generate concurrent 
 * **Interval & Limit Control:** Run continuously (Infinite Loop) or set a specific number of execution rounds with custom delays.
 * **Thread-Safe:** Prevents Data Race conditions using Mutex locks when writing status results.
 
-## Prerequisites
+## Prerequisite
 * Go 1.25.6 or higher
 
 ## Getting the Source Code
